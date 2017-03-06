@@ -1,0 +1,34 @@
+{
+  "name": "gallery-by-js",
+  "version": "1.0.0",
+  "description": "a gallery project which provides two ways to show picture",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chudequan8/gallery-by-js.git"
+  },
+  "keywords": [
+    "gallery",
+    "javascript",
+    "gulp"
+  ],
+  "author": "chudequan8",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chudequan8/gallery-by-js/issues"
+  },
+  "homepage": "https://github.com/chudequan8/gallery-by-js#readme",
+  "devDependencies": {
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-csso": "^2.0.0",
+    "gulp-imagemin": "^3.1.1",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.4.1",
+    "gulp-uglify": "^2.0.1"
+  }
+}
