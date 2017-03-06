@@ -22,11 +22,13 @@
   },
   "homepage": "https://github.com/chudequan8/gallery-by-js#readme",
   "devDependencies": {
+    "autoprefixer": "^6.7.6",
     "del": "^2.2.2",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-csso": "^2.0.0",
     "gulp-imagemin": "^3.1.1",
+    "gulp-postcss": "^6.3.0",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.4.1",
     "gulp-uglify": "^2.0.1"

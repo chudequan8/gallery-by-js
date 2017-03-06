@@ -1,10 +1,10 @@
 // 画廊应用的构造函数
-var Gallary = function(){
-	window.Gallary = this;
+var Gallery = function(){
+	window.Gallery = this;
 }
 
 // 1.翻面控制
-Gallary.prototype.turn = function(){
+Gallery.prototype.turn = function(){
 	var _wrap = this.wrap;
 	var _photoList = this.photoList;
 	var _dot = this.dotList;
@@ -30,14 +30,14 @@ Gallary.prototype.turn = function(){
 }
 
 // 2.初始化，将图片数据和控制条写入模板
-Gallary.prototype.init = function(options){
+Gallery.prototype.init = function(options){
 
 	this.options = options ? options : 'random';
 	this.wrap = document.getElementById("wrap");
 
 	// 获取图片数据
 	var req = new XMLHttpRequest();
-	req.open("GET", "/gallery-by-js/dist/data/data.json");
+	req.open("GET", "dist/data/data.json");
 	req.send();
 	req.onreadystatechange = function(){
 		if(req.readyState === 4){
@@ -61,10 +61,14 @@ Gallary.prototype.init = function(options){
 	        }.bind(this), 2000);
 	    } 
 	}.bind(this);
+
+	document.addEventListener('touchmove', function(e){
+		e.preventDefault();
+	})
 }
 
 // 3.图片排序（一张居中显示，其他随机排放）
-Gallary.prototype.sort = function(n){
+Gallery.prototype.sort = function(n){
 	this.photoList = document.getElementsByClassName('photo');
 	this.dotList = document.getElementsByClassName('dot');
 
@@ -112,8 +116,8 @@ function addPhoto(_this, d){
 		var _photo = '<div class="photo photo-front" id="photo_' + i + 
 					'"><div class="photo-wrap"><div class="side side-front"><p class="image"><img src="dist/img/' + d[i].img + 
 					'" alt="' + d[i].title + 
-					'"></p><p class="caption">' + d[i].title + 
-					'</p></div><div class="side side-back"><p class="desc"><span>' + d[i].desc + 
+					'"></p><p class="caption"><span>' + d[i].title + 
+					'</span></p></div><div class="side side-back"><p class="desc"><span>' + d[i].desc + 
 					'</span></p></div></div></div>';
 		var _dot = '<span class="dot" id="dot_' + i + '"></span>';
 		photoList += _photo;
@@ -186,10 +190,10 @@ function randomSort(_wrap, _photoArray){
 	var leftPhotoList = _photoArray.splice(0, Math.floor(_photoArray.length/2));
 	var rightPhotoList = _photoArray;
 
-	var photoWidth = leftPhotoList[0].offsetWidth;
-	var photoHeight = leftPhotoList[0].offsetHeight;
-	var wrapWidth = _wrap.offsetWidth;
-	var wrapHeight = _wrap.offsetHeight;
+	var photoWidth = leftPhotoList[0].clientWidth;
+	var photoHeight = leftPhotoList[0].clientHeight;
+	var wrapWidth = _wrap.clientWidth;
+	var wrapHeight = _wrap.clientHeight;
 
 	for (var i = 0, k = leftPhotoList.length; i < k; i++) {
 		leftPhotoList[i].style.top = random([-photoHeight/2, wrapHeight - photoHeight/2]) + 'px';
@@ -220,8 +224,8 @@ function annularSort(_wrap, _photoArray){
 	var leftPhotoList = _photoArray.splice(0, Math.floor(_photoArray.length/2));
 	var rightPhotoList = _photoArray;
 
-	var wrapWidth = _wrap.offsetWidth;
-	var wrapHeight = _wrap.offsetHeight;
+	var wrapWidth = _wrap.clientWidth;
+	var wrapHeight = _wrap.clientHeight;
 	var radius = Math.min(wrapWidth, wrapHeight) / 2;
 
 	for (var i = 0, k = leftPhotoList.length; i < k; i++) {

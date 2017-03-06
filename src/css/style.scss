@@ -40,7 +40,7 @@ body {
 .photo-front .photo-wrap {
 }
 .photo-back .photo-wrap {
-	transform: rotateY(180deg) translateX(-260px);
+	transform: rotateY(180deg) translateX(-100%);
 }
 
 /* 图片区域正反面样式 */
@@ -120,5 +120,76 @@ body {
 				transform: rotateY(180deg);
 			}
 		}
+	}
+}
+
+
+
+@media screen and (max-width: 700px) {
+	.photo {
+		width: 40%;
+		height: 0;
+		padding-top: 46%;
+		margin: -23% 0 0 -20%;
+	}
+	.photo-wrap {
+		top: 0;
+		left: 0;
+	}
+	.side {
+		padding: 5%;
+	}
+	.side-front .image {
+		width: 100%;
+		height: 0;
+		padding-top: 100%;
+	}
+	.side-front .image img {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+	.side-front .caption {
+		display: inline-table;
+		width: 100%;
+		height: 18.9%;
+		line-height: 1.1;
+		font-size: 16px;
+	}
+	.side-front .caption span {
+		display: table-cell;
+		vertical-align: middle;
+	}
+
+
+	.side-back .desc {
+		padding-right: 5%;
+		font-size: 14px;
+		line-height: 1.5;
+	}
+	.ps>.ps__scrollbar-y-rail {
+		width: 3%;
+	}
+	.ps>.ps__scrollbar-y-rail:active>.ps__scrollbar-y, .ps>.ps__scrollbar-y-rail:hover>.ps__scrollbar-y {
+		width: 100%;
+	}
+	.ps:hover.ps--in-scrolling.ps--x>.ps__scrollbar-x-rail, .ps:hover.ps--in-scrolling.ps--y>.ps__scrollbar-y-rail, .ps:hover>.ps__scrollbar-x-rail:hover, .ps:hover>.ps__scrollbar-y-rail:hover {
+		background-color: transparent;
+	}
+	.ps>.ps__scrollbar-y-rail>.ps__scrollbar-y {
+		right: 0;
+	}
+}
+
+
+@media screen and (max-width: 550px) {
+	.side-back .desc {
+		font-size: 12px;
+	}
+	.side-front .caption {
+		line-height: 1.1;
+		font-size: 14px;
 	}
 }

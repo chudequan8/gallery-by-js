@@ -8,6 +8,8 @@ var del = require('del');
 
 var sass = require('gulp-sass');
 var minifyCSS = require('gulp-csso');
+var postcss = require('gulp-postcss');
+var autoprefixer = require('autoprefixer');
 
 var paths = {
   scripts: ['src/js/**/*.js'],
@@ -27,7 +29,7 @@ gulp.task('scripts',['clean:js'], function() {
   return gulp.src(paths.scripts)
     .pipe(sourcemaps.init())
       .pipe(uglify())
-      .pipe(concat('gallary.min.js'))
+      .pipe(concat('gallery.min.js'))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('dist/js'));
 });
@@ -42,10 +44,16 @@ gulp.task('clean:css', function() {
 });
 
 gulp.task('styles',['clean:css'], function() {
+  var plugins = [
+    autoprefixer({browsers: ['last 2 version', 'ie >= 8', 'firefox 15']})
+  ];
   return gulp.src(paths.styles)
+    .pipe(sourcemaps.init())
     .pipe(sass())
+    .pipe(postcss(plugins))
     .pipe(minifyCSS())
     .pipe(concat('main.css'))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest('dist/css'));
 });
 
