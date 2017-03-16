@@ -5,10 +5,10 @@ var Gallery = function(){
 
 // 1.翻面控制
 Gallery.prototype.turn = function(){
-	var _wrap = this.wrap;
-	var _photoList = this.photoList;
-	var _dot = this.dotList;
 	var _this = this;
+	var _wrap = _this.wrap;
+	var _photoList = _this.photoList;
+	var _dot = _this.dotList;
 	for (var i = 0; i < _photoList.length; i++) {
 		
 		_photoList[i].onclick = (function(i){
@@ -62,9 +62,9 @@ Gallery.prototype.init = function(options){
 	    } 
 	}.bind(this);
 
-	document.addEventListener('touchmove', function(e){
-		e.preventDefault();
-	})
+	// document.addEventListener('touchmove', function(e){
+	// 	e.preventDefault();
+	// })
 }
 
 // 3.图片排序（一张居中显示，其他随机排放）
@@ -79,6 +79,10 @@ Gallery.prototype.sort = function(n){
 	var _photoArray = [];
 	var _options = this.options;
 
+
+	var _nav = document.getElementsByClassName('nav')[0];
+	var _ul = _nav.querySelector('ul');
+
 	// 从图片列表中取出随机一张作为中间的图片
 	for (var i = 0; i < _photoList.length; i++) {
 		var _this = _photoList[i];
@@ -89,9 +93,23 @@ Gallery.prototype.sort = function(n){
 		_photoArray.push(_this);
 
 		_dot[i].className = 'dot';
+		_dot[i].innerHTML = i + 1;
 	}
 	centerPhoto.className += " photo-center";
+	if(document.body.clientWidth < 768){
+		_nav.style.width = 5 * 30 + 'px';
+		_nav.style.marginLeft = -(5 * 30 / 2) + 'px';
+		if(n < 2){
+			_ul.style.left = 0;
+		} else if(n > (_dot.length - 3)){
+			_ul.style.left = -((_dot.length - 3)-2) * 30 + 'px';
+		} else {
+			_ul.style.left = -(n - 2)*30 + 'px';
+		}
+		_ul.style.transition = 'all 0.6s';
+	}
 	_dot[n].className += ' current fa fa-undo';
+	_dot[n].innerHTML = '';
 	_photoArray.splice(n, 1);
 
 	// 根据传入的参数执行相应的排序函数
@@ -119,11 +137,11 @@ function addPhoto(_this, d){
 					'"></p><p class="caption"><span>' + d[i].title + 
 					'</span></p></div><div class="side side-back"><p class="desc"><span>' + d[i].desc + 
 					'</span></p></div></div></div>';
-		var _dot = '<span class="dot" id="dot_' + i + '"></span>';
+		var _dot = '<li class="dot" id="dot_' + i + '"></li>';
 		photoList += _photo;
 		nav += _dot;
 	}
-	nav = '<div class="nav">' + nav + '</div>';
+	nav = '<div class="nav"><ul>' + nav + '</ul></div>';
 
 	_wrap.innerHTML = photoList + nav;
 	_wrap.style.display = 'block';
@@ -136,6 +154,12 @@ function addPhoto(_this, d){
 	[].forEach.call(document.querySelectorAll('.desc'), function (el) {
 		Ps.initialize(el);
 	});
+
+	// 为导航条添加触摸事件
+	if(document.body.clientWidth < 768) {
+		var _nav = document.getElementsByClassName('nav')[0];
+		dotScroll(_nav);
+	}
 }
 
 // 从给定的范围随机取一个值
@@ -235,4 +259,52 @@ function annularSort(_wrap, _photoArray){
 		rightPhotoList[i].style.transform = 'rotate(' + random([-90, 75]) + 'deg) translate(' + radius + 'px)';
 	}
 }
+
+// 为导航条添加触摸滚动事件
+function dotScroll(nav){
+	var _nav = nav;
+	var ul = _nav.querySelector('ul');
+	var left, startX, endX, startT, endT;
+	_nav.ontouchstart = function(e){
+		startX = e.touches[0].clientX;
+		startT = new Date() - 0;
+		left = parseInt(getStyle(ul, 'left'));
+	}
+	_nav.ontouchmove = function(e){
+		e.preventDefault();
+		ul.style.transition = 'all 0s';
+
+		endX = e.touches[0].clientX;
+		ul.style.left = left + endX - startX + 'px';
+	}
+	_nav.ontouchend = function(e){
+		endT = new Date() - 0;
+		if(endX == null) return ;
+		if((endT - startT < 300) && (Math.abs(endX - startX) < 30)){
+			return ;
+		}
+
+		left += endX - startX;
+		if(left < -300){
+			left = -300;
+		} else if(left > 0){
+			left = 0;
+		}
+		endX = null;
+		ul.style.transition = 'all 0.3s ease-out';
+		ul.style.left = -(Math.ceil(Math.abs(left/30))*30) + 'px';
+	}
+}
+
+// 获取元素的样式
+function getStyle(obj, attr) { 
+	if(obj.currentStyle) 
+	{ 
+		return obj.currentStyle[attr]; 
+	} 
+		else 
+	{ 
+		return getComputedStyle(obj,false)[attr]; 
+	} 
+} 
 	

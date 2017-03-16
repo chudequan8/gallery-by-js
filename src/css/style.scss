@@ -99,6 +99,13 @@ body {
 	height: $navHeight;
 	font-size: 0;
 	text-align: center;
+	overflow: hidden;
+
+	&>ul {
+		position: absolute;
+		left: 0;
+		width: $navWidth;
+	}
 
 	.dot {
 		display: inline-block;
@@ -111,8 +118,9 @@ body {
 		vertical-align: middle;
 		line-height: 30px;
 		-webkit-font-smoothing: antialiased;
+		-webkit-tap-highlight-color: transparent;
 		color: #fff;
-		transform: scale(0.6);
+		transform: scale(0.8);
 		transition: all 0.6s ease-in-out;
 		&.current {
 			transform: scale(1);
