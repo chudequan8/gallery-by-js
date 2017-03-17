@@ -62,9 +62,15 @@ Gallery.prototype.init = function(options){
 	    } 
 	}.bind(this);
 
-	// document.addEventListener('touchmove', function(e){
-	// 	e.preventDefault();
-	// })
+	document.addEventListener('touchmove', function(event) {
+	    // 判断默认行为是否可以被禁用
+	    if (event.cancelable) {
+	        // 判断默认行为是否已经被禁用
+	        if (!event.defaultPrevented) {
+	            event.preventDefault();
+	        }
+	    }
+	}, false);
 }
 
 // 3.图片排序（一张居中显示，其他随机排放）
@@ -100,13 +106,15 @@ Gallery.prototype.sort = function(n){
 		_nav.style.width = 5 * 30 + 'px';
 		_nav.style.marginLeft = -(5 * 30 / 2) + 'px';
 		if(n < 2){
-			_ul.style.left = 0;
+			_ul.style.transform = 'translateX(0)';
 		} else if(n > (_dot.length - 3)){
-			_ul.style.left = -((_dot.length - 3)-2) * 30 + 'px';
+			_ul.style.transform = 'translateX(' + -(_dot.length - 5)*30 + 'px)';
+			// _ul.style.left = -((_dot.length - 3)-2) * 30 + 'px';
 		} else {
-			_ul.style.left = -(n - 2)*30 + 'px';
+			_ul.style.transform = 'translateX(' + -(n - 2)*30 + 'px)';
+			// _ul.style.left = -(n - 2)*30 + 'px';
 		}
-		_ul.style.transition = 'all 0.6s';
+		// _ul.style.transition = 'transform 0.6s';
 	}
 	_dot[n].className += ' current fa fa-undo';
 	_dot[n].innerHTML = '';
@@ -122,6 +130,9 @@ Gallery.prototype.sort = function(n){
 	else {
 		alert('没有这种排序方式，请重新指定');
 	}
+
+	// 为导航条添加触摸事件
+	dotScroll(_nav);
 }
 
 // 把获得的图片信息插入模板并执行一次排序
@@ -154,12 +165,6 @@ function addPhoto(_this, d){
 	[].forEach.call(document.querySelectorAll('.desc'), function (el) {
 		Ps.initialize(el);
 	});
-
-	// 为导航条添加触摸事件
-	if(document.body.clientWidth < 768) {
-		var _nav = document.getElementsByClassName('nav')[0];
-		dotScroll(_nav);
-	}
 }
 
 // 从给定的范围随机取一个值
@@ -262,24 +267,30 @@ function annularSort(_wrap, _photoArray){
 
 // 为导航条添加触摸滚动事件
 function dotScroll(nav){
+
 	var _nav = nav;
 	var ul = _nav.querySelector('ul');
 	var left, startX, endX, startT, endT;
 	_nav.ontouchstart = function(e){
+		var arr = getStyle(ul, 'transform');
+		arr = arr.split(',');
+		left = parseInt(arr[4]);
+		// console.log(left);
 		startX = e.touches[0].clientX;
 		startT = new Date() - 0;
-		left = parseInt(getStyle(ul, 'left'));
 	}
 	_nav.ontouchmove = function(e){
 		e.preventDefault();
-		ul.style.transition = 'all 0s';
+		ul.style.transition = 'transform 0s';
 
 		endX = e.touches[0].clientX;
-		ul.style.left = left + endX - startX + 'px';
+		ul.style.transform = 'translateX(' + (left + endX - startX) + 'px)';
 	}
 	_nav.ontouchend = function(e){
 		endT = new Date() - 0;
+		// 没有移动，直接返回
 		if(endX == null) return ;
+		// 移动时间小于300毫秒并且移动距离小于30PX，直接返回
 		if((endT - startT < 300) && (Math.abs(endX - startX) < 30)){
 			return ;
 		}
@@ -291,8 +302,8 @@ function dotScroll(nav){
 			left = 0;
 		}
 		endX = null;
-		ul.style.transition = 'all 0.3s ease-out';
-		ul.style.left = -(Math.ceil(Math.abs(left/30))*30) + 'px';
+		ul.style.transition = 'transform 0.6s ease-out';
+		ul.style.transform = 'translateX(' + -(Math.ceil(Math.abs(left/30))*30) + 'px)';
 	}
 }
 
@@ -306,5 +317,4 @@ function getStyle(obj, attr) {
 	{ 
 		return getComputedStyle(obj,false)[attr]; 
 	} 
-} 
-	
+}
