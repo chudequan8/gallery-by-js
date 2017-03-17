@@ -8,7 +8,7 @@
 </head>
 <body onselectstart="return false" ondragstart="return false">
 	<div class="wrap" id="wrap"></div>
-	<script src="build/js/gallary.min.js"></script>
+	<script src="build/js/gallery.min.js"></script>
 	
 	<script>
 		/*
@@ -17,41 +17,9 @@
 		 * 1.annular: 环形排列	
 		 * 2.random: 随机排列	
 		 */
-		var myGallary = new Gallary();
+		var myGallery = new Gallery();
+		myGallery.init();
 
-		// 获取图片列表信息
-		(function getData(){
-
-			var req = new XMLHttpRequest();
-			req.open("GET", "build/data/data.json");
-			req.send();
-			req.onreadystatechange = function(){
-				if(req.readyState === 4){
-					if(req.status === 200){
-						var res = JSON.parse(req.responseText);
-						myGallary.addPhotos(res);	// 把获得的图片信息放入模板并执行一次排序
-						[].forEach.call(document.querySelectorAll('.desc'), function (el) {
-							Ps.initialize(el);
-						});
-					}
-					else {
-						alert("发生错误" + req.status);
-					}
-				}
-			}
-
-
-			document.addEventListener('touchmove', function(event) {
-			    // 判断默认行为是否可以被禁用
-			    if (event.cancelable) {
-			        // 判断默认行为是否已经被禁用
-			        if (!event.defaultPrevented) {
-			            event.preventDefault();
-			        }
-			    }
-			}, false);
-			
-		})(myGallary);
 	</script>
 </body>
 </html>
