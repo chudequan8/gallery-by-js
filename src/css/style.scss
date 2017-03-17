@@ -2,6 +2,12 @@
 html, body, #wrap {
 	@include fillAll;
 }
+html {
+	position: fixed;
+	left: 0;
+	top: 0;
+	overflow: hidden;
+}
 body {
 	background-color: #ccc;
 	color: #666;
