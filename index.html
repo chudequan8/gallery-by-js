@@ -20,6 +20,13 @@
 		var myGallery = new Gallery();
 		myGallery.init();
 
+		
+		var deviceWidth = document.documentElement.clientWidth;
+		if(deviceWidth > 750){
+			deviceWidth = 750;
+		}
+		document.documentElement.style.fontSize = 100 / 750 * deviceWidth + 'px';
+
 	</script>
 </body>
 </html>
