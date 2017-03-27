@@ -3,21 +3,28 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	<title>my Gallery</title>
+	<title>my gallary</title>
 	<link rel="stylesheet" href="dist/css/main.css">
+<!-- 	<script>
+		var deviceWidth = document.documentElement.clientWidth;
+		if(deviceWidth > 750){
+			deviceWidth = 750;
+		}
+		document.documentElement.style.fontSize = 100 / 750 * deviceWidth + 'px';
+	</script> -->
 </head>
 <body onselectstart="return false" ondragstart="return false">
 	<div class="wrap" id="wrap"></div>
 	<script src="dist/js/gallery.min.js"></script>
+	
 	<script>
 		/*
 		 * 初始化构造函数
-		 * params: 图片排列方式	
-		 * 1.annular: 环形排列	
-		 * 2.random: 随机排列	
 		 */
 		var myGallery = new Gallery();
-		myGallery.init();
+		setTimeout(function(){
+			myGallery.init();
+		},1000);
 	</script>
 </body>
 </html>
